@@ -8,13 +8,20 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Ambil Data Pemesanan & Produk
-$pemesanan_id = $_GET['id'] ?? 0;
+$pemesanan_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $query = "SELECT p.*, pr.nama_produk, pr.harga 
           FROM pemesanan p 
           JOIN produk pr ON p.produk_id = pr.id 
           WHERE p.id='$pemesanan_id'";
 $result = mysqli_query($conn, $query);
+if (!$result) {
+    die("Query error: " . mysqli_error($conn));
+}
+
 $pemesanan = mysqli_fetch_assoc($result);
+if (!$pemesanan) {
+    die("Data pemesanan tidak ditemukan.");
+}
 $total_harga = $pemesanan['jumlah'] * $pemesanan['harga'];
 
 // Daftar Rekening / E-Wallet / COD
@@ -271,17 +278,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <!-- Kolom Kiri -->
                     <div class="form-left">
                         <div class="form-col">
-                            <label class="label"><img src="img/image12.png" alt="Produk">Produk:</label>
+                            <label class="label"><img src="img/image12.png" alt="Produk">Produk</label>
                             <div class="input-box"><?php echo htmlspecialchars($pemesanan['nama_produk']); ?></div>
                         </div>
 
                         <div class="form-col">
-                            <label class="label"><img src="img/image13.png" alt="Jumlah">Jumlah:</label>
+                            <label class="label"><img src="img/image13.png" alt="Jumlah">Jumlah</label>
                             <div class="input-box"><?php echo htmlspecialchars($pemesanan['jumlah']); ?></div>
                         </div>
 
                         <div class="form-col">
-                            <label class="label"><img src="img/image14.png" alt="Harga">Total Harga:</label>
+                            <label class="label"><img src="img/image14.png" alt="Harga">Total Harga</label>
                             <div class="input-box">Rp<?php echo number_format($total_harga, 0, ',', '.'); ?></div>
                         </div>
                     </div>
@@ -289,7 +296,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <!-- Kolom Kanan -->
                     <div class="form-right">
                         <div class="form-col">
-                            <label class="label"><img src="img/image16.png" alt="Metode">Metode Pembayaran:</label>
+                            <label class="label"><img src="img/image16.png" alt="Metode">Metode Pembayaran</label>
                             <select name="metode" id="metode" class="select-box" required>
                                 <option value="">Pilih Metode</option>
                                 <?php foreach ($rekening as $key => $val) {
@@ -306,7 +313,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
 
                         <div class="form-col">
-                            <label class="label"><img src="img/image17.png" alt="Upload">Upload Bukti Pembayaran:</label>
+                            <label class="label"><img src="img/image17.png" alt="Upload">Upload Bukti Pembayaran</label>
                             <input type="file" name="bukti" id="bukti" accept="image/*" required class="upload-input">
                             <?php if (isset($error)) echo "<div class='error'>" . htmlspecialchars($error) . "</div>"; ?>
                         </div>
