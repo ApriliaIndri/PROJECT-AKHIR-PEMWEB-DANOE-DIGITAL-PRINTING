@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $metode_pengiriman = $_POST['metode_pengiriman'] ?? '';
     $user_id = $_SESSION['user_id'];
 
-    if (!preg_match('/^\d{10,23}$/', $nomor_telepon)) {
+    if (!preg_match('/^\d{10,13}$/', $nomor_telepon)) {
         $error_message = "Nomor telepon harus terdiri dari 10 hingga 23 digit angka!";
     }
 
