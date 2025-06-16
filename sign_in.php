@@ -38,7 +38,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 // Jika user tidak ditemukan
 if (!$user) {
     $_SESSION['error_message'] = 'Akun Anda belum tersedia. Silakan <a href="sign_up.php"><strong>Sign Up</strong></a>';
-    header("Location: login.php");
+    header("Location: sign_in.php");
     exit();
 }
 
@@ -58,7 +58,7 @@ if (password_verify($password_input, $user['password'])) {
 } else {
     // Password salah
     $_SESSION['error_message'] = "Password salah.";
-    header("Location: login.php");
+    header("Location: sign-in.php");
     exit();
 }
 }
